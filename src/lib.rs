@@ -142,8 +142,13 @@ impl Error {
     pub fn new_decode_error(description : &'static str, detail : Option<String>) -> Error {
         Error::Decode { description : description, detail : detail}
     }
-}
 
+}
+impl ::std::convert::From<Error> for ::std::io::Error {
+    fn from(e:Error) -> ::std::io::Error {
+        ::std::io::Error::new(::std::io::ErrorKind::Other, e)
+    }
+}
 impl ::std::convert::From<::std::io::Error> for Error {
     fn from(err : ::std::io::Error) -> Error {
         Error::Io(err)
